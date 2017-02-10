@@ -30,9 +30,7 @@ def plotheartrate(dates, datelist, recordlist):
     df_hr = parse(category, recordlist)
     df_hr.columns = ['Time', 'Heart Rate (bpm)']
     df_weekhr = weeklyhr(datelist, df_hr)
-    for i in range(52):
-        maxnum = df_weekhr[df_weekhr['Week'] == i].max()
-        print(maxnum)
+    print_max_heartrate(df_weekhr)
     makehrplot(dates, df_weekhr)
     
     
@@ -62,6 +60,15 @@ def weeklyhr(datelist, df_hr):
     df_weekhr = DataFrame(list_weekhr)
     print(df_weekhr)
     return df_weekhr
+
+
+def print_max_heartrate(df_weekhr):
+    print('Maximum heart rate measurements over date range:')
+    for i in range(52):
+        maxnum = df_weekhr[df_weekhr['Week'] == i].max()
+        if not maxnum.isnull().values.any():
+            print('Date:', mdates.num2date(maxnum['Date']))
+            print('Heart Rate (bpm): {0}\n'.format(maxnum['Heart Rate (bpm)']))
 
 
 def makehrplot(dates, df_week):
